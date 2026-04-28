@@ -1,17 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Picker } from "@/components/Picker";
 import { SelectionCard } from "@/components/SelectionCard";
-import { CATEGORY_LABELS, DEFAULT_SELECTION } from "@/lib/items";
+import { serialiseHomeTripCookie } from "@/lib/home-trip-cookie";
+import { CATEGORY_LABELS } from "@/lib/items";
 import type { Category, Item, Selection } from "@/lib/types";
 
 const CATEGORIES: Category[] = ["destination", "hotel", "activity", "transport"];
 
-export function TripPlanner() {
-    const [selection, setSelection] = useState<Selection>(DEFAULT_SELECTION);
+interface Props {
+    initialSelection: Selection;
+}
+
+export function TripPlanner({ initialSelection }: Props) {
+    const [selection, setSelection] = useState<Selection>(initialSelection);
     const [pickerCategory, setPickerCategory] = useState<Category | null>(null);
+
+    // Persist the selection to a cookie so the next SSR render reflects
+    // what the user picked last. Skip the very first effect run — that
+    // value is already what the server gave us; no point writing it back.
+    const isFirstRenderRef = useRef(true);
+    useEffect(() => {
+        if (isFirstRenderRef.current) {
+            isFirstRenderRef.current = false;
+            return;
+        }
+        document.cookie = serialiseHomeTripCookie(selection);
+    }, [selection]);
 
     const filledCount = CATEGORIES.filter((c) => selection[c] !== null).length;
 

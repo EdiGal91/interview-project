@@ -48,9 +48,11 @@ npm run dev
 
 ## What you should observe
 
-When the home page (`/`) first loads (or after a hard refresh / cmd+shift+R),
-the four selection cards visibly **jump / shift** before settling. QA reported
-this as "layout breaking on initial load".
+The home page (`/`) starts with an empty trip composer. Pick at least one
+card (Destination / Hotel / Activity / Transport) — the choice is persisted
+in a cookie. **Refresh the page**: now the four selection cards visibly
+**jump / shift** before settling. QA reported this as "layout breaking on
+reload when the user has a saved trip".
 
 ## The PR you are reviewing
 
