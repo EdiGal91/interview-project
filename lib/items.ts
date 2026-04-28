@@ -125,13 +125,6 @@ export const CATALOG: Record<Category, Item[]> = {
     ],
 };
 
-export const DEFAULT_SELECTION = {
-    destination: CATALOG.destination[0],
-    hotel: CATALOG.hotel[0],
-    activity: CATALOG.activity[0],
-    transport: CATALOG.transport[0],
-};
-
 export const CATEGORY_LABELS: Record<Category, string> = {
     destination: "Destination",
     hotel: "Hotel",
